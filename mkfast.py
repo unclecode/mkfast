@@ -15,9 +15,20 @@ def clone_repository(project_name):
     repo_url = "https://github.com/unclecode/fastapi-template.git"
     subprocess.run(["git", "clone", repo_url, project_name])
 
+def git_clean():
+    # Remove the git folder, if it exists
+    if os.path.exists(".git"):
+        shutil.rmtree(".git")
+
 def git_init():
     print_color("Initializing Git...", YELLOW)
     subprocess.run(["git", "init"])
+
+def git_add_remote(remote_url):
+    # Change branch to Master
+    subprocess.run(["git", "checkout", "-M", "master"])
+    print_color("Adding remote...", YELLOW)
+    subprocess.run(["git", "remote", "add", "origin", remote_url])
 
 def create_virtualenv():
     print_color("Creating virtual environment...", YELLOW)
@@ -42,14 +53,17 @@ if __name__ == "__main__":
     # Clone repository
     clone_repository(".")
 
+    # Remove the git folder, if it exists
+    git_clean()
+
     # Initialize Git
     git_init_choice = input("Do you want to initialize a new Git repository? (yes/no): ")
     if git_init_choice.lower() == "yes":
         git_init()
-
-    # Remove existing .git folder if not initializing a new Git repository
-    if git_init_choice.lower() != "yes":
-        shutil.rmtree(".git")
+        git_add_remote_choice = input("Do you want to add a remote? (yes/no): ")    
+        if git_add_remote_choice.lower() == "yes":
+            remote_url = input("Enter the remote URL: ")
+            git_add_remote(remote_url)
 
     # Create Virtual Environment
     virtualenv_choice = input("Do you want to create a Python virtual environment? (yes/no): ")
