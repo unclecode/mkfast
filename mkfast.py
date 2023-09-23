@@ -26,7 +26,7 @@ def git_init():
 
 def git_add_remote(remote_url):
     # Change branch to Master
-    subprocess.run(["git", "checkout", "-M", "master"])
+    subprocess.run(["git", "branch", "-M", "master"])
     print_color("Adding remote...", YELLOW)
     subprocess.run(["git", "remote", "add", "origin", remote_url])
 
